@@ -1,0 +1,46 @@
+clear
+
+data = [];
+dataCon = [];
+y = load("ACC\VOI_2_48_8_1.mat");
+data.y01 = y.xY.y;
+dataCon = [dataCon,y.xY.y];
+y = load("Fusiform_Gyrus\VOI_-30_-16_-32_1.mat");
+data.y02 = y.xY.y;
+dataCon = [dataCon,y.xY.y];
+y = load("Inferior_Parietal_Lobule\VOI_44_-48_40_1.mat");
+data.y03 = y.xY.y;
+dataCon = [dataCon,y.xY.y];
+y = load("Inferior_Temporal_Gyrus\VOI_-44_-4_-38_1.mat");
+data.y04 = y.xY.y;
+dataCon = [dataCon,y.xY.y];
+y = load("Insula_Lobe\VOI_42_-14_-8_1.mat");
+data.y05 = y.xY.y;
+dataCon = [dataCon,y.xY.y];
+y = load("Medial_Temporal_Pole\VOI_54_10_-28_1.mat");
+data.y06 = y.xY.y;
+dataCon = [dataCon,y.xY.y];
+y = load("Middle_Frontal_Gyrus\VOI_28_24_46_1.mat");
+data.y07 = y.xY.y;
+dataCon = [dataCon,y.xY.y];
+y = load("Middle_Temporal_Gyrus\VOI_-64_-2_-22_1.mat");
+data.y08 = y.xY.y;
+dataCon = [dataCon,y.xY.y];
+y = load("Opercularis\VOI_-60_14_4_1.mat");
+data.y09 = y.xY.y;
+dataCon = [dataCon,y.xY.y];
+y = load("Orbitalis\VOI_-30_22_-14_1.mat");
+data.y10 = y.xY.y;
+dataCon = [dataCon,y.xY.y];
+y = load("Superior_Medial_Gyrus\VOI_8_60_4_1.mat");
+data.y11 = y.xY.y;
+dataCon = [dataCon,y.xY.y];
+y = load("Superior_Temporal_Gyrus\VOI_-44_-20_-6_1.mat");
+data.y12 = y.xY.y;
+dataCon = [dataCon,y.xY.y];
+y = load("Triangularis\VOI_-46_30_4_1.mat");
+data.y13 = y.xY.y;
+dataCon = [dataCon,y.xY.y];
+data.yCon = dataCon;
+
+save("..\1093_data_voxel.mat","data");
