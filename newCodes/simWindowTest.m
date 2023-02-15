@@ -1,7 +1,7 @@
 clear
 
 % ------------------ 303 ----------------------------
-
+%{
 x1 = load("..\new_data\303_data.mat").Y;
 x1 = x1(2:257,:);
 s = size(x1);
@@ -13,9 +13,9 @@ sigma = 1; % Parameter determining connections (variance of gaussian distance)
 
 [Graphs_W,Graphs_top,Graphs_Layout] = simWindowLearn(x1,Num,sigma,N,Layout);
 save("generated\303SimWindow_8s.mat","Graphs_W","Graphs_Layout","Graphs_top");
-
+%}
 % ------------------ 375 ----------------------------
-%{
+%%{
 x1 = load("..\new_data\375_data.mat").Y;
 x1 = x1(2:257,:);
 s = size(x1);
@@ -25,6 +25,6 @@ Layout = load("..\new_data\375_layout.mat").Layout;
 sigma = 1; % Parameter determining connections (variance of gaussian distance)
 % gamma = 0.8; % Parameter determining connections (Threshold)
 
-[Graphs_W,Graphs_top,Graphs_Layout] = simLearn(x1,Num,sigma,N,Layout);
-save("375Sim_8s.mat","Graphs_W","Graphs_Layout","Graphs_top");
-%}
+[Graphs_W,Graphs_top,Graphs_Layout] = simWindowLearn(x1,Num,sigma,N,Layout);
+save("generated\375SimWindow_8s.mat","Graphs_W","Graphs_Layout","Graphs_top");
+%%}
