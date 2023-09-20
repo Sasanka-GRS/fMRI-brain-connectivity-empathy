@@ -1,4 +1,4 @@
-function combining(option)
+function combining(option,subject)
 
 %% Set default to SA
 
@@ -10,39 +10,19 @@ end
 
 addpath(".\functions");
 
-%% For subject 303
+%% 
 
-dataIn = load("..\clustering\clustered_data\303_data_clustered.mat").data;
+s1 = "..\clustering\clustered_data\";
+s2 = "_data_clustered.mat";
+sub = s1+subject+s2;
+
+dataIn = load(sub).data;
 data = combine(dataIn,option);
 
-save(".\combined_data\303_data_combined.mat","data");
+s1 = ".\combined_data\";
+s2 = "_data_combined.mat";
+sub = s1+subject+s2;
 
-%% For subject 375
-
-dataIn = load("..\clustering\clustered_data\375_data_clustered.mat").data;
-data = combine(dataIn,option);
-
-save(".\combined_data\375_data_combined.mat","data");
-
-%% For subject 378
-
-dataIn = load("..\clustering\clustered_data\378_data_clustered.mat").data;
-data = combine(dataIn,option);
-
-save(".\combined_data\378_data_combined.mat","data");
-
-%% For subject 797
-
-dataIn = load("..\clustering\clustered_data\797_data_clustered.mat").data;
-data = combine(dataIn,option);
-
-save(".\combined_data\797_data_combined.mat","data");
-
-%% For subject 820
-
-dataIn = load("..\clustering\clustered_data\820_data_clustered.mat").data;
-data = combine(dataIn,option);
-
-save(".\combined_data\820_data_combined.mat","data");
+save(sub,"data");
 
 end

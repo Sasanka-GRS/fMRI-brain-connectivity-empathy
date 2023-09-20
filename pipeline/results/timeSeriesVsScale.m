@@ -13,9 +13,23 @@ scale = load("..\extract_data\rating.mat").scale;
 
 scaleD = scale(1:2:end);
 
+%% Plot scale
+
+f = figure;
+f.Position = [0 0 900 800];
+plot(scale,LineWidth=1.5);
+xlabel('Time (s)','FontSize',40)
+ylabel('Scale','FontSize',40)
+title('Scale vs Time','FontSize',40)
+xlim([0,512])
+tightfig
+%legend('303','375','378','797','820','FontSize',25)
+fontsize(f,20,"points")
+print('scale','-dpdf','-fillpage')
+
 %% Important Region
 
-R1 = "R13L";
+R1 = "R13R";
 
 N = size(Data375);
 N = N(1);
@@ -34,69 +48,10 @@ Signal378 = squeeze(Data378(:,indexR1));
 Signal797 = squeeze(Data797(:,indexR1));
 Signal820 = squeeze(Data820(:,indexR1));
 
-%% Plotting time series
-
-figure()
-subplot(5,1,1)
-plot(time,Signal303);
-xlabel('Time (s)')
-ylabel('BOLD')
-title('Insula (L) 303');
-subplot(5,1,2)
-plot(time,Signal375);
-xlabel('Time (s)')
-ylabel('BOLD')
-title('Insula (L) 375');
-subplot(5,1,3)
-plot(time,Signal378);
-xlabel('Time (s)')
-ylabel('BOLD')
-title('Insula (L) 378');
-subplot(5,1,4)
-plot(time,Signal797);
-xlabel('Time (s)')
-ylabel('BOLD')
-title('Insula (L) 797');
-subplot(5,1,5)
-plot(time,Signal820);
-xlabel('Time (s)')
-ylabel('BOLD')
-title('Insula (L) 820');
-sgtitle('Variation across subjects Insula(L) BOLD vs Time')
-
-%% Plotting BOLD vs scale
-
-figure()
-subplot(5,1,1)
-scatter(scaleD,Signal303,30,'o','filled');
-xlabel('Scale')
-ylabel('BOLD')
-title('Insula (L) 303');
-subplot(5,1,2)
-scatter(scaleD,Signal375,30,'o','filled');
-xlabel('Scale')
-ylabel('BOLD')
-title('Insula (L) 375');
-subplot(5,1,3)
-scatter(scaleD,Signal378,30,'o','filled');
-xlabel('Scale')
-ylabel('BOLD')
-title('Insula (L) 378');
-subplot(5,1,4)
-scatter(scaleD,Signal797,30,'o','filled');
-xlabel('Scale')
-ylabel('BOLD')
-title('Insula (L) 797');
-subplot(5,1,5)
-scatter(scaleD,Signal820,30,'o','filled');
-xlabel('Scale')
-ylabel('BOLD')
-title('Insula (L) 820');
-sgtitle('Variation across subjects Insula(L) BOLD vs Scale')
-
 %% Plotting BOLD vs scale for all on one plot
 
-figure()
+f = figure;
+f.Position = [0 0 900 800];
 scatter(scaleD,Signal303,30,'o','filled');
 hold on
 scatter(scaleD,Signal375,30,'o','filled');
@@ -104,7 +59,118 @@ scatter(scaleD,Signal378,30,'o','filled');
 scatter(scaleD,Signal797,30,'o','filled');
 scatter(scaleD,Signal820,30,'o','filled');
 hold off
-xlabel('Scale')
-ylabel('BOLD')
-sgtitle('Variation across subjects Insula(L) BOLD vs Scale')
-legend('303','375','378','797','820')
+xlabel('Scale','FontSize',40)
+ylabel('BOLD','FontSize',40)
+legend('303','375','378','797','820','FontSize',25)
+fontsize(f,20,"points")
+print('scatter','-dpdf','-fillpage')
+
+%% Quantize Samples to precision 0.03
+
+mini = min(scaleD);
+maxi = max(scaleD);
+precision = 0.03;
+
+scaleNew = mini:precision:maxi;
+L = length(scaleD);
+L1 = length(scaleNew);
+
+scaleDNew = zeros(L,1);
+
+for i = 1:L
+    flag = 0;
+    for j = 1:L1
+        if(scaleD(i)>=scaleNew(j))
+            scaleDNew(i) = scaleNew(j);
+            flag = 1;
+        end
+    end
+    if(flag==0)
+        scaleDNew(i) = scaleNew(end);
+    end
+end
+
+%% Making 2-D matrix for box plot
+
+scaleUnique = sort(unique(scaleDNew));
+L = length(scaleUnique);
+
+bold303 = [];
+bold375 = [];
+bold378 = [];
+bold797 = [];
+bold820 = [];
+
+groups303 = [];
+groups375 = [];
+groups378 = [];
+groups797 = [];
+groups820 = [];
+
+for i = 1:L
+    scaleHere = scaleUnique(i);
+    
+    bold303Here = Signal303(scaleDNew==scaleHere);
+    L1 = length(bold303Here);
+    bold303 = [bold303;bold303Here];
+    groups303 = [groups303;scaleHere*ones(L1,1)];
+
+    bold375Here = Signal375(scaleDNew==scaleHere);
+    L1 = length(bold375Here);
+    bold375 = [bold375;bold375Here];
+    groups375 = [groups375;scaleHere*ones(L1,1)];
+
+    bold378Here = Signal378(scaleDNew==scaleHere);
+    L1 = length(bold378Here);
+    bold378 = [bold378;bold378Here];
+    groups378 = [groups378;scaleHere*ones(L1,1)];
+
+    bold797Here = Signal797(scaleDNew==scaleHere);
+    L1 = length(bold797Here);
+    bold797 = [bold797;bold797Here];
+    groups797 = [groups797;scaleHere*ones(L1,1)];
+
+    bold820Here = Signal820(scaleDNew==scaleHere);
+    L1 = length(bold820Here);
+    bold820 = [bold820;bold820Here];
+    groups820 = [groups820;scaleHere*ones(L1,1)];
+
+end
+
+fig = figure;
+fig.Position = [0 0 900 800];
+tiledlayout(5,1,'TileSpacing','tight','Padding','tight')
+nexttile
+boxplot(bold303,groups303);
+xticklabels('')
+xL=xlim;
+yL=ylim;
+text(0.99*xL(2),0.99*yL(2),'303','HorizontalAlignment','right','VerticalAlignment','top','FontSize',14,'FontWeight','bold')
+nexttile
+boxplot(bold375,groups375);
+xticklabels('')
+xL=xlim;
+yL=ylim;
+text(0.99*xL(2),0.99*yL(2),'375','HorizontalAlignment','right','VerticalAlignment','top','FontSize',14,'FontWeight','bold')
+nexttile
+boxplot(bold378,groups378);
+ylabel('BOLD','FontSize',15)
+xticklabels('')
+xL=xlim;
+yL=ylim;
+text(0.99*xL(2),0.99*yL(2),'378','HorizontalAlignment','right','VerticalAlignment','top','FontSize',14,'FontWeight','bold')
+nexttile
+boxplot(bold797,groups797);
+xticklabels('')
+xL=xlim;
+yL=ylim;
+text(0.99*xL(2),0.99*yL(2),'797','HorizontalAlignment','right','VerticalAlignment','top','FontSize',14,'FontWeight','bold')
+nexttile
+boxplot(bold820,groups820);
+xlabel('Scale','FontSize',15)
+xL=xlim;
+yL=ylim;
+text(0.99*xL(2),0.99*yL(2),'820','HorizontalAlignment','right','VerticalAlignment','top','FontSize',14,'FontWeight','bold')
+fontsize(fig,20,"points")
+tightfig
+print('boxplot','-dpdf','-bestfit')
