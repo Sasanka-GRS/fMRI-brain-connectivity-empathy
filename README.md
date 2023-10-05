@@ -18,11 +18,11 @@ Contains the region-wise grouped time-series of all voxels that remain after app
 
 ### Node locations
 
-Contains the locations of the centers of the considered regions of interest. It is an Nx3 matrix of all region centers' (x,y,z) locations. Store it as nodes.mat.
+Contains the locations of the centers of the considered regions of interest. It is an Nx3 matrix of all region centers' (x,y,z) locations. Store it as [nodes.mat](/pipeline/extract_data/nodes.mat).
 
 ### Node labels
 
-Contains the labels for each node (see legend.xlsx for reference). Store it as nodeLocations.mat.
+Contains the labels for each node (see [legend.xlsx](/legend.xlsx) for reference). Store it as [nodeLocations.mat](/pipeline/extract_data/nodeLocations.mat).
 
 ## Pre-requisite packages
 
